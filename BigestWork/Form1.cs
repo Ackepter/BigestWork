@@ -1,11 +1,12 @@
 using BigestWork.Draw;
+using BigestWork.Loggers;
 using BigestWork.Logic;
-using System;
 
 namespace BigestWork;
 
 public partial class Form1 : System.Windows.Forms.Form
 {
+    private Logger logger = new Logger();
     private DrawUtility _draw;
 
     private ActionWithAlgorythm _action;
@@ -29,6 +30,10 @@ public partial class Form1 : System.Windows.Forms.Form
         {
             _action.Push(textBoxForPush.Text);
         }
+        else
+        {
+            logger.Log("Класс работы с алгоритмом не создан!", LogType.Error);
+        }
     }
 
     private void popButton_Click(object sender, EventArgs e)
@@ -44,6 +49,10 @@ public partial class Form1 : System.Windows.Forms.Form
             {
                 textBoxForPop.Text = string.Empty;
             }
+        }
+        else
+        {
+            logger.Log("Класс работы с алгоритмом не создан!", LogType.Error);
         }
     }
 }

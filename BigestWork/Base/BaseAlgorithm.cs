@@ -6,7 +6,7 @@ public abstract class BaseAlgorithm<T>
     public virtual string Description { get; init; } = string.Empty;
 
 
-    protected virtual IEnumerable<T> Collection { get; init; } = new LinkedList<T>();
+    public virtual IEnumerable<T> Collection { get; init; } = new LinkedList<T>();
 
 
     public virtual int MaxCollectionSize { get; init; } = int.MaxValue;

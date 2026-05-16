@@ -1,11 +1,10 @@
 ﻿using BigestWork.Base;
-using System.Threading;
 
 namespace BigestWork.Logic;
 
 public class Setting
 {
-    public StackOnDoubleConnectedList<string> Algorithm { get; init; }
+    public BaseAlgorithm<string> Algorithm { get; init; }
 
     public Setting(int timeOut, TimeSpan timeout) : this()
     {
