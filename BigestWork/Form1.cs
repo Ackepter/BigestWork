@@ -1,10 +1,49 @@
-namespace BigestWork
+using BigestWork.Draw;
+using BigestWork.Logic;
+using System;
+
+namespace BigestWork;
+
+public partial class Form1 : System.Windows.Forms.Form
 {
-    public partial class Form1 : Form
+    private DrawUtility _draw;
+
+    private ActionWithAlgorythm _action;
+
+    public Form1()
     {
-        public Form1()
+        InitializeComponent();
+    }
+
+    
+    private void addButton_Click(object sender, EventArgs e)
+    {
+        _action = new ActionWithAlgorythm();
+
+        _action.Configure(new Setting());
+    }
+
+    private void pushButton_Click(object sender, EventArgs e)
+    {
+        if (_action is not null)
         {
-            InitializeComponent();
+            _action.Push(textBoxForPush.Text);
+        }
+    }
+
+    private void popButton_Click(object sender, EventArgs e)
+    {
+        if (_action is not null)
+        {
+            string? buff = _action.Pop();
+            if (buff != null)
+            {
+                textBoxForPop.Text = buff;
+            }
+            else
+            {
+                textBoxForPop.Text = string.Empty;
+            }
         }
     }
 }

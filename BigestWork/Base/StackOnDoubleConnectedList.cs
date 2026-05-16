@@ -1,10 +1,10 @@
-﻿namespace BigestWork;
+﻿namespace BigestWork.Base;
 
 public class StackOnDoubleConnectedList<T> : BaseAlgorithm<T> where T : class
 {
     public override string Name { get; init; } = "StackOnDoubleConnectedList";
 
-    public override string Description { get; init; } = string.Empty;
+    public override string Description { get; init; } = "Представляет из себя стек, реализованный на двусвязном списке";
 
     protected override IEnumerable<T> Collection => _list;
 
@@ -13,6 +13,20 @@ public class StackOnDoubleConnectedList<T> : BaseAlgorithm<T> where T : class
     public StackOnDoubleConnectedList() => Validate();
 
     private LinkedList<T> _list = new();
+
+
+    public StackOnDoubleConnectedList(int maxSize)
+    {
+        MaxCollectionSize = maxSize;
+    }
+
+    public StackOnDoubleConnectedList(int maxSize, TimeSpan timeout) : this(maxSize)
+    {
+        if (maxSize <= 0) throw new ArgumentOutOfRangeException(nameof(maxSize));
+        if (timeout < TimeSpan.Zero) throw new ArgumentOutOfRangeException(nameof(timeout));
+
+        Timeout = timeout;
+    }
 
     public void Push(T Value)
     {

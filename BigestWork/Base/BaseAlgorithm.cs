@@ -1,4 +1,4 @@
-﻿namespace BigestWork;
+﻿namespace BigestWork.Base;
 
 public abstract class BaseAlgorithm<T>
 {
