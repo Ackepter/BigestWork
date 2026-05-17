@@ -1,8 +1,5 @@
 ﻿using BigestWork.Base;
-using Microsoft.VisualBasic.ApplicationServices;
-using System.IO;
 using System.Text;
-using static System.Net.WebRequestMethods;
 using File = System.IO.File;
 
 namespace BigestWork.Logic;
@@ -22,12 +19,18 @@ public class ActionWithStack : IFunc
 
     public void Configure(Setting setting)
     {
+        if (setting is null)
+        {
+            throw new ArgumentNullException(nameof(setting.Algorithm), "Algorithm не может быть null");
+        }
+
         algorythm = (StackOnDoubleConnectedList<string>)setting.Algorithm;
         _list = (LinkedList<string>)algorythm.Collection;
 
         MaxCollectionSize = algorythm.MaxCollectionSize;
     }
 
+    public string GetDescription() => algorythm.Description;
     public void Push(string Value)
     {
         if (_list.Count > MaxCollectionSize) return;
@@ -101,6 +104,11 @@ public class ActionWithStack : IFunc
         return returnedString;
     }
 
+    public bool IsEmpty()
+    {
+        return _list.Count == 0;
+    }
+
     public bool LoadFromFile(string path)
     {
         try
@@ -122,7 +130,7 @@ public class ActionWithStack : IFunc
                 _list = (LinkedList<string>)algorythm.Collection;
             }
         }
-        catch (Exception _)
+        catch (Exception)
         {
             return false;
         }
@@ -136,7 +144,7 @@ public class ActionWithStack : IFunc
         {
             File.WriteAllText(path, PrintStackBackward(), Encoding.UTF8);
         }
-        catch (Exception _)
+        catch (Exception)
         {
             return false;
         }

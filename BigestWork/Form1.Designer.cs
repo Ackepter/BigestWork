@@ -42,6 +42,12 @@
             открытьToolStripMenuItemLoad = new ToolStripMenuItem();
             saveFileDialog = new SaveFileDialog();
             openFileDialog = new OpenFileDialog();
+            infoButton = new Button();
+            traversal = new Button();
+            radioButtonForward = new RadioButton();
+            radioButtonBackward = new RadioButton();
+            buttonFind = new Button();
+            textBoxFind = new TextBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             menuStrip1.SuspendLayout();
             SuspendLayout();
@@ -136,14 +142,14 @@
             // toolStripMenuItemSave
             // 
             toolStripMenuItemSave.Name = "toolStripMenuItemSave";
-            toolStripMenuItemSave.Size = new Size(224, 26);
+            toolStripMenuItemSave.Size = new Size(166, 26);
             toolStripMenuItemSave.Text = "Сохранить";
             toolStripMenuItemSave.Click += toolStripMenuItemSave_Click;
             // 
             // открытьToolStripMenuItemLoad
             // 
             открытьToolStripMenuItemLoad.Name = "открытьToolStripMenuItemLoad";
-            открытьToolStripMenuItemLoad.Size = new Size(224, 26);
+            открытьToolStripMenuItemLoad.Size = new Size(166, 26);
             открытьToolStripMenuItemLoad.Text = "Открыть";
             открытьToolStripMenuItemLoad.Click += toolStripMenuItemLoad_Click;
             // 
@@ -151,11 +157,76 @@
             // 
             openFileDialog.FileName = "openFileDialog1";
             // 
+            // infoButton
+            // 
+            infoButton.Location = new Point(341, 524);
+            infoButton.Name = "infoButton";
+            infoButton.Size = new Size(144, 29);
+            infoButton.TabIndex = 11;
+            infoButton.Text = "Описание";
+            infoButton.UseVisualStyleBackColor = true;
+            infoButton.Click += infoButton_Click;
+            // 
+            // traversal
+            // 
+            traversal.Location = new Point(341, 305);
+            traversal.Name = "traversal";
+            traversal.Size = new Size(144, 29);
+            traversal.TabIndex = 12;
+            traversal.Text = "Пройтись";
+            traversal.UseVisualStyleBackColor = true;
+            traversal.Click += traversal_Click;
+            // 
+            // radioButtonForward
+            // 
+            radioButtonForward.AutoSize = true;
+            radioButtonForward.Location = new Point(341, 408);
+            radioButtonForward.Name = "radioButtonForward";
+            radioButtonForward.Size = new Size(84, 24);
+            radioButtonForward.TabIndex = 13;
+            radioButtonForward.TabStop = true;
+            radioButtonForward.Text = "Forward\r\n";
+            radioButtonForward.UseVisualStyleBackColor = true;
+            // 
+            // radioButtonBackward
+            // 
+            radioButtonBackward.AutoSize = true;
+            radioButtonBackward.Location = new Point(341, 438);
+            radioButtonBackward.Name = "radioButtonBackward";
+            radioButtonBackward.Size = new Size(96, 24);
+            radioButtonBackward.TabIndex = 14;
+            radioButtonBackward.TabStop = true;
+            radioButtonBackward.Text = "BackWard";
+            radioButtonBackward.UseVisualStyleBackColor = true;
+            // 
+            // buttonFind
+            // 
+            buttonFind.Location = new Point(341, 340);
+            buttonFind.Name = "buttonFind";
+            buttonFind.Size = new Size(144, 29);
+            buttonFind.TabIndex = 15;
+            buttonFind.Text = "Найти";
+            buttonFind.UseVisualStyleBackColor = true;
+            buttonFind.Click += buttonFind_Click;
+            // 
+            // textBoxFind
+            // 
+            textBoxFind.Location = new Point(341, 375);
+            textBoxFind.Name = "textBoxFind";
+            textBoxFind.Size = new Size(144, 27);
+            textBoxFind.TabIndex = 16;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(538, 560);
+            Controls.Add(textBoxFind);
+            Controls.Add(buttonFind);
+            Controls.Add(radioButtonBackward);
+            Controls.Add(radioButtonForward);
+            Controls.Add(traversal);
+            Controls.Add(infoButton);
             Controls.Add(labelPop);
             Controls.Add(textBoxForPop);
             Controls.Add(labelPush);
@@ -191,5 +262,11 @@
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem toolStripMenuItemSave;
         private ToolStripMenuItem открытьToolStripMenuItemLoad;
+        private Button infoButton;
+        private Button traversal;
+        private RadioButton radioButtonForward;
+        private RadioButton radioButtonBackward;
+        private Button buttonFind;
+        private TextBox textBoxFind;
     }
 }
