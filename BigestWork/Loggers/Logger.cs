@@ -2,25 +2,15 @@
 
 namespace BigestWork.Loggers;
 
-public class Logger : ILogger
+public static class Logger
 {
-    public string PathToLogFile { get; set; }
+    public static string PathToLogFile { get; set; } = "C:\\Users\\Ackepter\\Desktop\\Лабы\\ООП\\курсовая\\BigestWork\\BigestWork\\Files\\Log.txt";
 
-    public void SetLogWay(string way) {  
+    public static void SetLogWay(string way) {  
         PathToLogFile = way; 
     }
-
-    public Logger()
-    {
-        SetLogWay("C:\\Users\\Ackepter\\Desktop\\Лабы\\ООП\\курсовая\\BigestWork\\BigestWork\\Files\\Log.txt");
-    }
-
-    public Logger(string pathToLogFile) : this()
-    {
-        SetLogWay(pathToLogFile);
-    }
     
-    public void Log(string message, LogType type)
+    public static void Log(string message, LogType type)
     {
         if (CheckMessage(message)) return;
 
@@ -39,8 +29,8 @@ public class Logger : ILogger
         }
     }
 
-    private string GetCurrentTime() => DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-    private bool CheckMessage(string message)
+    private static string GetCurrentTime() => DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+    private static bool CheckMessage(string message)
     {
         return message is null || message.Length == 0;
     }

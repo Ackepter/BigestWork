@@ -11,6 +11,11 @@ public class StackOnDoubleConnectedList<T> : BaseAlgorithm<T> where T : class
 
 
     private LinkedList<T> _list = new();
+
+    public void SetNewList(LinkedList<T> list)
+    {
+        if(list != null) _list = list;
+    }
     public override IEnumerable<T> Collection => _list;
 
 

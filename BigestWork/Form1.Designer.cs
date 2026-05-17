@@ -29,64 +29,50 @@
         private void InitializeComponent()
         {
             pictureBox = new PictureBox();
-            addButton = new Button();
             labelVisualize = new Label();
-            labelSetting = new Label();
             textBoxForPush = new TextBox();
             pushButton = new Button();
             popButton = new Button();
             labelPush = new Label();
             labelPop = new Label();
             textBoxForPop = new TextBox();
+            menuStrip1 = new MenuStrip();
+            toolStripMenuItem1 = new ToolStripMenuItem();
+            toolStripMenuItemSave = new ToolStripMenuItem();
+            открытьToolStripMenuItemLoad = new ToolStripMenuItem();
+            saveFileDialog = new SaveFileDialog();
+            openFileDialog = new OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
+            menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // pictureBox
             // 
-            pictureBox.Location = new Point(12, 40);
+            pictureBox.Location = new Point(12, 67);
             pictureBox.Name = "pictureBox";
             pictureBox.Size = new Size(314, 486);
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
             // 
-            // addButton
-            // 
-            addButton.Location = new Point(12, 567);
-            addButton.Name = "addButton";
-            addButton.Size = new Size(94, 29);
-            addButton.TabIndex = 1;
-            addButton.Text = "Создать";
-            addButton.UseVisualStyleBackColor = true;
-            addButton.Click += addButton_Click;
-            // 
             // labelVisualize
             // 
             labelVisualize.AutoSize = true;
-            labelVisualize.Location = new Point(12, 12);
+            labelVisualize.Location = new Point(12, 39);
             labelVisualize.Name = "labelVisualize";
             labelVisualize.Size = new Size(107, 20);
             labelVisualize.TabIndex = 2;
             labelVisualize.Text = "Визуализация";
             // 
-            // labelSetting
-            // 
-            labelSetting.AutoSize = true;
-            labelSetting.Location = new Point(12, 539);
-            labelSetting.Name = "labelSetting";
-            labelSetting.Size = new Size(83, 20);
-            labelSetting.TabIndex = 3;
-            labelSetting.Text = "Настройка";
-            // 
             // textBoxForPush
             // 
-            textBoxForPush.Location = new Point(341, 63);
+            textBoxForPush.Location = new Point(341, 90);
             textBoxForPush.Name = "textBoxForPush";
             textBoxForPush.Size = new Size(144, 27);
             textBoxForPush.TabIndex = 4;
             // 
             // pushButton
             // 
-            pushButton.Location = new Point(341, 96);
+            pushButton.Location = new Point(341, 123);
             pushButton.Name = "pushButton";
             pushButton.Size = new Size(144, 29);
             pushButton.TabIndex = 5;
@@ -96,7 +82,7 @@
             // 
             // popButton
             // 
-            popButton.Location = new Point(341, 211);
+            popButton.Location = new Point(341, 238);
             popButton.Name = "popButton";
             popButton.Size = new Size(144, 29);
             popButton.TabIndex = 6;
@@ -107,7 +93,7 @@
             // labelPush
             // 
             labelPush.AutoSize = true;
-            labelPush.Location = new Point(341, 40);
+            labelPush.Location = new Point(341, 67);
             labelPush.Name = "labelPush";
             labelPush.Size = new Size(144, 20);
             labelPush.TabIndex = 7;
@@ -116,7 +102,7 @@
             // labelPop
             // 
             labelPop.AutoSize = true;
-            labelPop.Location = new Point(341, 155);
+            labelPop.Location = new Point(341, 182);
             labelPop.Name = "labelPop";
             labelPop.Size = new Size(181, 20);
             labelPop.TabIndex = 9;
@@ -124,29 +110,67 @@
             // 
             // textBoxForPop
             // 
-            textBoxForPop.Location = new Point(341, 178);
+            textBoxForPop.Location = new Point(341, 205);
             textBoxForPop.Name = "textBoxForPop";
+            textBoxForPop.ReadOnly = true;
             textBoxForPop.Size = new Size(144, 27);
             textBoxForPop.TabIndex = 8;
+            // 
+            // menuStrip1
+            // 
+            menuStrip1.ImageScalingSize = new Size(20, 20);
+            menuStrip1.Items.AddRange(new ToolStripItem[] { toolStripMenuItem1 });
+            menuStrip1.Location = new Point(0, 0);
+            menuStrip1.Name = "menuStrip1";
+            menuStrip1.Size = new Size(538, 28);
+            menuStrip1.TabIndex = 10;
+            menuStrip1.Text = "menuStrip1";
+            // 
+            // toolStripMenuItem1
+            // 
+            toolStripMenuItem1.DropDownItems.AddRange(new ToolStripItem[] { toolStripMenuItemSave, открытьToolStripMenuItemLoad });
+            toolStripMenuItem1.Name = "toolStripMenuItem1";
+            toolStripMenuItem1.Size = new Size(59, 24);
+            toolStripMenuItem1.Text = "Файл";
+            // 
+            // toolStripMenuItemSave
+            // 
+            toolStripMenuItemSave.Name = "toolStripMenuItemSave";
+            toolStripMenuItemSave.Size = new Size(224, 26);
+            toolStripMenuItemSave.Text = "Сохранить";
+            toolStripMenuItemSave.Click += toolStripMenuItemSave_Click;
+            // 
+            // открытьToolStripMenuItemLoad
+            // 
+            открытьToolStripMenuItemLoad.Name = "открытьToolStripMenuItemLoad";
+            открытьToolStripMenuItemLoad.Size = new Size(224, 26);
+            открытьToolStripMenuItemLoad.Text = "Открыть";
+            открытьToolStripMenuItemLoad.Click += toolStripMenuItemLoad_Click;
+            // 
+            // openFileDialog
+            // 
+            openFileDialog.FileName = "openFileDialog1";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(538, 632);
+            ClientSize = new Size(538, 560);
             Controls.Add(labelPop);
             Controls.Add(textBoxForPop);
             Controls.Add(labelPush);
             Controls.Add(popButton);
             Controls.Add(pushButton);
             Controls.Add(textBoxForPush);
-            Controls.Add(labelSetting);
             Controls.Add(labelVisualize);
-            Controls.Add(addButton);
             Controls.Add(pictureBox);
+            Controls.Add(menuStrip1);
+            MainMenuStrip = menuStrip1;
             Name = "Form1";
             Text = "Визуализация Стека На Двусвязном Списке";
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+            menuStrip1.ResumeLayout(false);
+            menuStrip1.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -154,14 +178,18 @@
         #endregion
 
         private PictureBox pictureBox;
-        private Button addButton;
         private Label labelVisualize;
-        private Label labelSetting;
         private TextBox textBoxForPush;
         private Button pushButton;
         private Button popButton;
         private Label labelPush;
         private Label labelPop;
         private TextBox textBoxForPop;
+        private MenuStrip menuStrip1;
+        private SaveFileDialog saveFileDialog;
+        private OpenFileDialog openFileDialog;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripMenuItem toolStripMenuItemSave;
+        private ToolStripMenuItem открытьToolStripMenuItemLoad;
     }
 }

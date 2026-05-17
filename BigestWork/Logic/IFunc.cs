@@ -4,7 +4,7 @@ public interface IFunc
 {
     public void Configure(Setting setting);
 
-    public void SaveInFile();
+    public bool SaveInFile(string path);
 
-    public void LoadFromFile();
+    public bool LoadFromFile(string path);
 }

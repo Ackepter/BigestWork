@@ -1,17 +1,28 @@
 ﻿using BigestWork.Base;
+using Microsoft.VisualBasic.ApplicationServices;
+using System.IO;
+using System.Text;
+using static System.Net.WebRequestMethods;
+using File = System.IO.File;
 
 namespace BigestWork.Logic;
 
-public class ActionWithAlgorythm : IFunc
+public class ActionWithStack : IFunc
 {
+    private StackOnDoubleConnectedList<string> algorythm;
+    
     private int MaxCollectionSize {  get; set; }
     private LinkedList<string> _list;
 
-    public ActionWithAlgorythm() => Configure(new Setting());
+    public LinkedList<string> GetCopyOfInnerList()
+    {
+        return new LinkedList<string>(_list);
+    }
+    public ActionWithStack() => Configure(new Setting());
 
     public void Configure(Setting setting)
     {
-        var algorythm = setting.Algorithm;
+        algorythm = (StackOnDoubleConnectedList<string>)setting.Algorithm;
         _list = (LinkedList<string>)algorythm.Collection;
 
         MaxCollectionSize = algorythm.MaxCollectionSize;
@@ -67,10 +78,9 @@ public class ActionWithAlgorythm : IFunc
 
         string returnedString = string.Empty;
 
-        int i = 0;
         while (temp != null)
         {
-            returnedString += (i++).ToString() + ": " + temp.ToString();
+            returnedString += temp.Value.ToString() + ":";
             temp = temp.Next;
         }
 
@@ -82,23 +92,55 @@ public class ActionWithAlgorythm : IFunc
 
         string returnedString = string.Empty;
 
-        int i = 0;
         while (temp != null)
         {
-            returnedString += (i++).ToString() + ": " + temp.ToString();
+            returnedString += temp.Value.ToString() + ":";
             temp = temp.Previous;
         }
 
         return returnedString;
     }
 
-    public void LoadFromFile()
+    public bool LoadFromFile(string path)
     {
-        throw new NotImplementedException();
+        try
+        {
+            string info = File.ReadAllText(path);
+
+            if (info != null && info.CompareTo(string.Empty) != 0)
+            {
+                string[] splitedInfo = info.Split(':');
+
+                LinkedList<string> list = new LinkedList<string>();
+
+                for (int i = 0; i < splitedInfo.Length - 1; i++)
+                {
+                    list.AddFirst(splitedInfo[i]);
+                }
+
+                algorythm.SetNewList(list);
+                _list = (LinkedList<string>)algorythm.Collection;
+            }
+        }
+        catch (Exception _)
+        {
+            return false;
+        }
+
+        return true;
     }
 
-    public void SaveInFile()
+    public bool SaveInFile(string path)
     {
-        throw new NotImplementedException();
+        try
+        {
+            File.WriteAllText(path, PrintStackBackward(), Encoding.UTF8);
+        }
+        catch (Exception _)
+        {
+            return false;
+        }
+
+        return true;
     }
 }
