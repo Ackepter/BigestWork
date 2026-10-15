@@ -4,7 +4,9 @@ public class StackOnDoubleConnectedList<T> : BaseAlgorithm<T> where T : class
 {
     public override string Name { get; init; } = "StackOnDoubleConnectedList";
 
-    public override string Description { get; init; } = "Представляет из себя стек, реализованный на двусвязном списке";
+    public override string Description { get; init; } = "Представляет из себя стек, реализованный на двусвязном списке. \n" +
+        "Помимо стандартных функционала стека, есть возможность прохода по стеку и поиск элемента в нём двумя способами: \n" +
+        "Вперед-назад и назад-вперед \n";
     public override int MaxCollectionSize { get; init; } = int.MaxValue;
     public int Count => _list.Count;
     public bool IsEmpty => _list.Count == 0;

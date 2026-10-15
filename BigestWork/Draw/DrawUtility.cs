@@ -19,6 +19,10 @@ file static class Palette
 
 public class AnimatedElement
 {
+    public bool IsAttaching { get; set; }
+    public bool IsDetaching { get; set; }
+    public float LinkOffset { get; set; }
+    public float TargetLinkOffset { get; set; }
     public bool IsHighlighted { get; set; }
     public string Value { get; }
     public float CurrentY { get; set; }  
@@ -38,6 +42,9 @@ public class AnimatedElement
         TargetAlpha = 255f;
         OffsetX = 0f;
         Color = Palette.Colors[colorIndex % Palette.Colors.Length];
+
+        LinkOffset = 45f;
+        TargetLinkOffset = 0f;
     }
 }
 
@@ -77,22 +84,31 @@ public class DrawUtility
             el.TargetY += ElementStep;
 
         float targetY = TopY;
-        float startY = targetY - 60f;
+        float startY = targetY - 120f;
 
-        var newEl = new AnimatedElement(value, startY, targetY, _colorCounter++);
+        var newEl = new AnimatedElement(
+            value,
+            startY,
+            targetY,
+            _colorCounter++);
+
+        newEl.LinkOffset = -45f;
+        newEl.TargetLinkOffset = -45f;
+
+        newEl.IsAttaching = true;
+
         _elements.Insert(0, newEl);
     }
 
     public void AnimatePop()
     {
-        if (_elements.Count == 0) return;
+        if (_elements.Count == 0)
+            return;
 
         var top = _elements[0];
-        top.IsPopping = true;
-        top.TargetAlpha = 0f;
 
-        for (int i = 1; i < _elements.Count; i++)
-            _elements[i].TargetY -= ElementStep;
+        top.IsDetaching = true;
+        top.TargetLinkOffset = -45f;
     }
 
 
@@ -107,15 +123,65 @@ public class DrawUtility
             el.CurrentY = Lerp(el.CurrentY, el.TargetY, Speed);
             el.Alpha = Lerp(el.Alpha, el.TargetAlpha, Speed);
 
+            el.LinkOffset = Lerp(
+            el.LinkOffset,
+            el.TargetLinkOffset,
+            Speed * 0.7f);
+
+            if (el.IsDetaching)
+            {
+                bool detached =
+                    Math.Abs(
+                        el.LinkOffset -
+                        el.TargetLinkOffset) < 1f;
+
+                if (detached)
+                {
+                    el.IsDetaching = false;
+                    el.IsPopping = true;
+
+                    el.TargetAlpha = 0f;
+
+                    for (int j = 1; j < _elements.Count; j++)
+                        _elements[j].TargetY -= ElementStep;
+                }
+            }
+
+            if (el.IsAttaching)
+            {
+                bool arrived =
+                    Math.Abs(
+                        el.CurrentY -
+                        el.TargetY) < 1f;
+
+                if (arrived)
+                {
+                    el.IsAttaching = false;
+                    el.TargetLinkOffset = 0f;
+                }
+            }
+
             if (el.IsPopping)
                 el.OffsetX = Lerp(el.OffsetX, 120f, Speed);
 
-            bool yDone = Math.Abs(el.CurrentY - el.TargetY) < 0.5f;
-            bool aDone = Math.Abs(el.Alpha - el.TargetAlpha) < 1f;
+            bool yDone =
+                Math.Abs(el.CurrentY - el.TargetY) < 0.5f;
 
-            if (!yDone || !aDone) animating = true;
+            bool aDone =
+                Math.Abs(el.Alpha - el.TargetAlpha) < 1f;
 
-            if (el.IsPopping && aDone)
+            bool linkDone =
+                Math.Abs(
+                    el.LinkOffset -
+                    el.TargetLinkOffset) < 0.5f;
+
+            bool xDone =
+                Math.Abs(el.OffsetX - 120f) < 1f;
+
+            if (!yDone || !aDone || !linkDone)
+                animating = true;
+
+            if (el.IsPopping && aDone && xDone)
                 _elements.RemoveAt(i);
         }
 
@@ -152,12 +218,33 @@ public class DrawUtility
         using var indexFont = new Font("Segoe UI", 9, FontStyle.Regular, GraphicsUnit.Point);
         using var fmt2 = new StringFormat { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
 
+        for (int i = 0; i < _elements.Count - 1; i++)
+        {
+            var current = _elements[i];
+            var next = _elements[i + 1];
+
+            int alpha = (int)Math.Min(current.Alpha, next.Alpha);
+
+            int centerX = x + Element.Weight / 2;
+
+            int top =(int)(current.CurrentY + current.LinkOffset + Element.Height);
+
+            int bottom = (int)(next.CurrentY + next.LinkOffset);
+
+            g.DrawDoubleLinkedConnector(
+                centerX,
+                top,
+                bottom,
+                Color.FromArgb(120, 120, 120),
+                alpha);
+        }
+
         for (int i = 0; i < _elements.Count; i++)
         {
             var el = _elements[i];
             int alpha = (int)Math.Clamp(el.Alpha, 0, 255);
             int drawX = x + (int)el.OffsetX;
-            int drawY = (int)el.CurrentY;
+            int drawY = (int)(el.CurrentY + el.LinkOffset);
 
             using var shadowBrush = new SolidBrush(Color.FromArgb(alpha / 6, 0, 0, 0));
             g.FillRoundedRectangle(shadowBrush, drawX + 3, drawY + 4, Element.Weight, Element.Height, 10);
@@ -190,7 +277,7 @@ public class DrawUtility
         return bmp;
     }
 
-    private float TopY => 50f;
+    private float TopY => 80f;
     private float ElementStep => Element.Height + 12f;
     private static float Lerp(float a, float b, float t) => a + (b - a) * t;
 }
@@ -219,4 +306,62 @@ file static class GraphicsExtensions
         path.CloseFigure();
         return path;
     }
+
+    public static void DrawDoubleLinkedConnector(
+        this Graphics g,
+        int centerX,
+        int topY,
+        int bottomY,
+        Color color,
+        int alpha)
+    {
+        using var pen = new Pen(Color.FromArgb(alpha, color), 2.2f)
+        {
+            StartCap = System.Drawing.Drawing2D.LineCap.Round,
+            EndCap = System.Drawing.Drawing2D.LineCap.Round
+        };
+
+        const int gap = 8;
+
+        int y1 = topY + gap;
+        int y2 = bottomY - gap;
+
+        int leftX = centerX - 18;
+        int rightX = centerX + 18;
+
+        g.DrawLine(pen, leftX, y1, leftX, y2);
+
+        g.DrawLine(pen, leftX, y2, leftX - 7, y2 - 7);
+        g.DrawLine(pen, leftX, y2, leftX + 7, y2 - 7);
+
+
+        g.DrawLine(pen, rightX, y2, rightX, y1);
+
+        g.DrawLine(pen, rightX, y1, rightX - 7, y1 + 7);
+        g.DrawLine(pen, rightX, y1, rightX + 7, y1 + 7);
+
+
+        using var curvePen = new Pen(
+            Color.FromArgb(alpha / 2, color),
+            1.5f);
+
+        g.DrawArc(
+            curvePen,
+            leftX - 12,
+            y1 - 10,
+            24,
+            20,
+            0,
+            180);
+
+        g.DrawArc(
+            curvePen,
+            rightX - 12,
+            y2 - 10,
+            24,
+            20,
+            180,
+            180);
+    }
+
 }

@@ -4,7 +4,7 @@ namespace BigestWork.Loggers;
 
 public static class Logger
 {
-    public static string PathToLogFile { get; set; } = "C:\\Users\\Ackepter\\Desktop\\Лабы\\ООП\\курсовая\\BigestWork\\BigestWork\\Files\\Log.txt";
+    public static string PathToLogFile { get; set; } = "C:\\Users\\Ackepter\\Desktop\\УЧЁБА\\Прошлое\\ООП\\курсовая\\BigestWork\\BigestWork\\Log.txt";
 
     public static void SetLogWay(string way) {  
         PathToLogFile = way; 
@@ -13,6 +13,11 @@ public static class Logger
     public static void Log(string message, LogType type)
     {
         if (CheckMessage(message)) return;
+
+        if (!File.Exists(PathToLogFile))
+        {
+            File.Create(PathToLogFile).Close();
+        }
 
         string CurrentTime = GetCurrentTime();
         switch (type)
